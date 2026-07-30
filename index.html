@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spinning Dare Wheel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="loading" id="loading" role="status" aria-live="polite">
+      <div class="loading-wheel" aria-hidden="true"></div>
+      <h1>Spinning Dare Wheel</h1>
+      <p>From the mind of Sammi G</p>
+    </div>
+    <main class="game-shell">
+      <header>
+        <div class="brand">
+          <div class="logo">SPINNING <span>DARE WHEEL</span></div>
+          <div class="creator-credit">From the mind of Sammi G</div>
+        </div>
+        <p>Spin for your next brave idea</p>
+      </header>
+      <section class="game" aria-label="Dare wheel game">
+        <div class="wheel-wrap">
+          <div class="pointer" aria-hidden="true"></div>
+          <canvas id="wheel" width="900" height="900" aria-label="A wheel containing 105 colorful dares"></canvas>
+          <button id="spin" type="button" aria-label="Spin the dare wheel">SPIN</button>
+        </div>
+        <aside class="result-card" aria-live="polite">
+          <div class="result-label">YOUR DARE</div>
+          <p id="result">Tap SPIN to let the sky decide!</p>
+          <div class="count"><strong id="count">105</strong> colorful dares waiting</div>
+        </aside>
+      </section>
+      <footer>Use the wheel with friends, be kind, and choose a new spin anytime.</footer>
+    </main>
+    <script src="game.js"></script>
+  </body>
+</html>
