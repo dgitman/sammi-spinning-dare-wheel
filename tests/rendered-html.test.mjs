@@ -30,7 +30,7 @@ test("server-renders the dare wheel", async () => {
   const html = await response.text();
   assert.match(html, /<title>Spinning Dare Wheel<\/title>/i);
   assert.match(html, /From the mind of Sammi G/);
-  assert.match(html, /<strong id="count">105<\/strong> colorful dares waiting/);
+  assert.match(html, /<strong id="count">108<\/strong> colorful dares waiting/);
   assert.match(html, /aria-label="Spin the dare wheel"/);
   assert.match(html, /\/game\.js/);
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape/);

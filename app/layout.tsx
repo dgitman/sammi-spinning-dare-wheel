@@ -14,7 +14,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const imageUrl = `${protocol}://${host}/og.png`;
   const title = "Spinning Dare Wheel";
   const description =
-    "Spin a colorful wheel of 105 playful dares, from the mind of Sammi G.";
+    "Spin a colorful wheel of 108 playful dares, from the mind of Sammi G.";
 
   return {
     title,

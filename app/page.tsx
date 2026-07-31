@@ -27,7 +27,7 @@ export default function Home() {
               id="wheel"
               width="900"
               height="900"
-              aria-label="A wheel containing 105 colorful dares"
+              aria-label="A wheel containing 108 colorful dares"
             />
             <button id="spin" type="button" aria-label="Spin the dare wheel">
               SPIN
@@ -38,7 +38,7 @@ export default function Home() {
             <div className="result-label">YOUR DARE</div>
             <p id="result">Tap SPIN to let the sky decide!</p>
             <div className="count">
-              <strong id="count">105</strong> colorful dares waiting
+              <strong id="count">108</strong> colorful dares waiting
             </div>
           </aside>
         </section>
