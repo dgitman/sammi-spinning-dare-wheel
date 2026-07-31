@@ -33,6 +33,7 @@ test("server-renders the dare wheel", async () => {
   assert.match(html, /<strong id="count">108<\/strong> colorful dares waiting/);
   assert.match(html, /aria-label="Spin the dare wheel"/);
   assert.match(html, /\/game\.js/);
+  assert.match(html, /\/favicon\.png/);
   assert.match(
     html,
     /googletagmanager\.com\/gtag\/js\?id=G-N8BSKY8S4B/,
