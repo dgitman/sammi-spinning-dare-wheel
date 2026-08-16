@@ -3,28 +3,72 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Spinning Dare Wheel</title>
-    <meta name="description" content="Spin a colorful wheel and discover your next brave, funny dare." />
+    <title>Spin the Dare Wheel – 108 Fun Dares Online</title>
+    <meta name="description" content="Spin a free online dare wheel with 108 funny, playful challenges for parties, sleepovers, game nights, and friends. No signup needed." />
     <link rel="canonical" href="https://spinningdarewheel.com/" />
+    <meta name="theme-color" content="#7036bd" />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content="Spinning Dare Wheel" />
-    <meta property="og:title" content="Spinning Dare Wheel" />
-    <meta property="og:description" content="Spin a colorful wheel and discover your next brave, funny dare." />
+    <meta property="og:title" content="Spin the Dare Wheel – 108 Fun Dares Online" />
+    <meta property="og:description" content="Spin a free online dare wheel with 108 funny, playful challenges for parties, sleepovers, game nights, and friends." />
     <meta property="og:url" content="https://spinningdarewheel.com/" />
     <meta property="og:image" content="https://spinningdarewheel.com/assets/social-share.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="A colorful dare wheel in a bright blue sky beside the words Spinning Dare Wheel." />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Spinning Dare Wheel" />
-    <meta name="twitter:description" content="Spin a colorful wheel and discover your next brave, funny dare." />
+    <meta name="twitter:title" content="Spin the Dare Wheel – 108 Fun Dares Online" />
+    <meta name="twitter:description" content="Spin a free online dare wheel with 108 funny, playful challenges for parties, sleepovers, game nights, and friends." />
     <meta name="twitter:image" content="https://spinningdarewheel.com/assets/social-share.png" />
     <meta name="twitter:image:alt" content="A colorful dare wheel in a bright blue sky beside the words Spinning Dare Wheel." />
     <link rel="icon" type="image/png" href="assets/favicon.png" />
+    <link rel="apple-touch-icon" href="assets/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="image" href="assets/sky-background.webp" type="image/webp" />
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://spinningdarewheel.com/#website",
+            "url": "https://spinningdarewheel.com/",
+            "name": "Spinning Dare Wheel",
+            "description": "A free online dare wheel with 108 funny, playful challenges.",
+            "inLanguage": "en-US"
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://spinningdarewheel.com/#game",
+            "url": "https://spinningdarewheel.com/",
+            "name": "Spinning Dare Wheel",
+            "description": "Spin a colorful online wheel to choose from 108 playful dares for friends, parties, sleepovers, and game nights.",
+            "applicationCategory": "GameApplication",
+            "operatingSystem": "Any",
+            "browserRequirements": "Requires JavaScript",
+            "inLanguage": "en-US",
+            "isAccessibleForFree": true,
+            "image": "https://spinningdarewheel.com/assets/social-share.png",
+            "creator": {
+              "@type": "Person",
+              "name": "Sammi G"
+            },
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "isPartOf": {
+              "@id": "https://spinningdarewheel.com/#website"
+            }
+          }
+        ]
+      }
+    </script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-N8BSKY8S4B"></script>
     <script>
@@ -37,18 +81,26 @@
   <body>
     <div class="loading" id="loading" role="status" aria-live="polite">
       <div class="loading-wheel" aria-hidden="true"></div>
-      <h1>Spinning Dare Wheel</h1>
+      <div class="loading-title">Spinning Dare Wheel</div>
       <p>From the mind of Sammi G</p>
     </div>
     <main class="game-shell">
       <header>
         <div class="brand">
-          <div class="logo">SPINNING <span>DARE WHEEL</span></div>
+          <a class="home-link" href="/" aria-label="Spinning Dare Wheel home">
+            <h1 class="logo">SPINNING <span>DARE WHEEL</span></h1>
+          </a>
           <div class="creator-credit">From the mind of Sammi G</div>
         </div>
         <p>Spin for your next brave idea</p>
       </header>
-      <section class="game" aria-label="Dare wheel game">
+      <nav class="site-nav" aria-label="Dare wheel guides">
+        <a href="party-dare-wheel/">Party Wheel</a>
+        <a href="dare-wheel-for-friends/">For Friends</a>
+        <a href="sleepover-dares/">Sleepover Dares</a>
+        <a href="funny-dares/">Funny Dares</a>
+      </nav>
+      <section class="game" id="play" aria-label="Dare wheel game">
         <div class="wheel-wrap">
           <div class="pointer" aria-hidden="true"></div>
           <canvas id="wheel" width="900" height="900" aria-label="A wheel containing 108 colorful dares"></canvas>
@@ -60,7 +112,67 @@
           <div class="count"><strong id="count">108</strong> colorful dares waiting</div>
         </aside>
       </section>
-      <footer>Use the wheel with friends, be kind, and choose a new spin anytime.</footer>
+      <section class="seo-content" aria-labelledby="about-wheel">
+        <div class="content-card intro-card">
+          <p class="eyebrow">Free online party game</p>
+          <h2 id="about-wheel">A Dare Wheel with 108 Playful Challenges</h2>
+          <p>Need a quick way to get a party, sleepover, or game night moving? Tap the center of the wheel and it will randomly choose one of 108 funny dares. There is no account, download, or setup—just open the game and spin.</p>
+          <p>The challenges mix acting, dancing, impressions, jokes, creative prompts, and harmless group activities. Anyone can skip a dare that feels uncomfortable and spin again.</p>
+        </div>
+
+        <div class="content-grid">
+          <section class="content-card" aria-labelledby="how-to-play">
+            <h2 id="how-to-play">How to Play</h2>
+            <ol>
+              <li>Gather your friends and decide who spins first.</li>
+              <li>Press <strong>SPIN</strong> and wait for the wheel to choose.</li>
+              <li>Try the dare, or choose a new spin if it is not right for you.</li>
+            </ol>
+          </section>
+
+          <section class="content-card" aria-labelledby="good-for">
+            <h2 id="good-for">Made for Groups and Game Nights</h2>
+            <p>Use the wheel as a quick party icebreaker, a sleepover activity, a game-night challenge, or a playful way to settle whose turn it is. It works in any modern mobile or desktop browser.</p>
+            <p>Looking for a particular mood? Try the <a href="party-dare-wheel/">party dare wheel</a>, <a href="dare-wheel-for-friends/">dare wheel for friends</a>, <a href="sleepover-dares/">sleepover dare guide</a>, or our list of <a href="funny-dares/">funny dares</a>.</p>
+          </section>
+        </div>
+
+        <section class="content-card" aria-labelledby="sample-dares">
+          <h2 id="sample-dares">Example Dares on the Wheel</h2>
+          <ul class="dare-list">
+            <li>Perform a dramatic weather forecast for the room.</li>
+            <li>Create a handshake with the player to your left.</li>
+            <li>Do your best dinosaur impression.</li>
+            <li>Invent a ridiculous new holiday.</li>
+            <li>Make up a movie title starring everyone in the room.</li>
+            <li>Give a dramatic trailer voice-over for the next spin.</li>
+          </ul>
+        </section>
+
+        <section class="content-card faq" aria-labelledby="faq-title">
+          <h2 id="faq-title">Dare Wheel Questions</h2>
+          <details>
+            <summary>Is the dare wheel free?</summary>
+            <p>Yes. The full 108-dare wheel is free to play and does not require an account.</p>
+          </details>
+          <details>
+            <summary>Does it work on phones and tablets?</summary>
+            <p>Yes. The wheel adapts to phones, tablets, laptops, and desktop screens.</p>
+          </details>
+          <details>
+            <summary>Can a player skip a dare?</summary>
+            <p>Absolutely. Keep the game fun and comfortable for everyone. A player can always skip a challenge and spin again.</p>
+          </details>
+          <details>
+            <summary>Will the wheel choose the same dare twice?</summary>
+            <p>Each spin is random, so repeats are possible. With 108 choices, there is plenty of variety for a group game.</p>
+          </details>
+        </section>
+      </section>
+      <footer>
+        <p>Use the wheel with friends, be kind, and choose a new spin anytime.</p>
+        <p class="footer-links"><a href="party-dare-wheel/">Party Wheel</a><a href="dare-wheel-for-friends/">For Friends</a><a href="sleepover-dares/">Sleepovers</a><a href="funny-dares/">Funny Dares</a></p>
+      </footer>
     </main>
     <script src="game.js"></script>
   </body>
