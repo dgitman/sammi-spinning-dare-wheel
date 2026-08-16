@@ -1,18 +1,22 @@
 :root { --purple:#7036bd; --deep:#3f1a79; --ink:#32165f; }
 * { box-sizing:border-box; }
-body { margin:0; min-height:100vh; color:var(--ink); font-family:'Nunito',sans-serif; background:#93dcfb url('assets/sky-background.png') center/cover fixed no-repeat; }
-.loading { position:fixed; inset:0; z-index:10; display:grid; place-content:center; justify-items:center; gap:6px; background:#93dcfb url('assets/sky-background.png') center/cover; color:#fff; text-align:center; transition:opacity .5s ease, visibility .5s ease; }
+body { margin:0; min-height:100vh; color:var(--ink); font-family:'Nunito',sans-serif; background:#93dcfb url('assets/sky-background.webp') center/cover fixed no-repeat; }
+.loading { position:fixed; inset:0; z-index:10; display:grid; place-content:center; justify-items:center; gap:6px; background:#93dcfb url('assets/sky-background.webp') center/cover; color:#fff; text-align:center; transition:opacity .3s ease, visibility .3s ease; }
 .loading.done { opacity:0; visibility:hidden; pointer-events:none; }
 .loading-wheel { width:142px; aspect-ratio:1; border:9px solid #7135bf; border-radius:50%; background:conic-gradient(#ff6f8a 0 12deg,#ffce55 12deg 24deg,#52d7bb 24deg 36deg,#798cff 36deg 48deg,#ff8abf 48deg 60deg,#b36cf5 60deg 72deg,#67cfef 72deg 84deg,#ff9b66 84deg 96deg,#fcdb60 96deg 108deg,#53cf8d 108deg 120deg,#ff6f8a 120deg 132deg,#ffce55 132deg 144deg,#52d7bb 144deg 156deg,#798cff 156deg 168deg,#ff8abf 168deg 180deg,#b36cf5 180deg 192deg,#67cfef 192deg 204deg,#ff9b66 204deg 216deg,#fcdb60 216deg 228deg,#53cf8d 228deg 240deg,#ff6f8a 240deg 252deg,#ffce55 252deg 264deg,#52d7bb 264deg 276deg,#798cff 276deg 288deg,#ff8abf 288deg 300deg,#b36cf5 300deg 312deg,#67cfef 312deg 324deg,#ff9b66 324deg 336deg,#fcdb60 336deg); box-shadow:0 9px 0 rgba(74,32,132,.22); animation:loadingSpin 1.1s linear infinite; }
-.loading h1 { margin:14px 0 0; font:800 clamp(2rem,6vw,4rem)/.95 'Baloo 2',sans-serif; text-shadow:0 4px 0 #7135bf; }.loading p { margin:0; color:#592180; font:900 1.35rem 'Nunito',sans-serif; }
+.loading-title { margin:14px 0 0; font:800 clamp(2rem,6vw,4rem)/.95 'Baloo 2',sans-serif; text-shadow:0 4px 0 #7135bf; }.loading p { margin:0; color:#592180; font:900 1.35rem 'Nunito',sans-serif; }
 @keyframes loadingSpin { to { transform:rotate(360deg); } }
-.game-shell { min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:28px 20px 20px; background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.18)); }
+.game-shell { min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:28px 20px 20px; background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.24)); }
 header { width:min(1050px,100%); display:flex; align-items:baseline; justify-content:space-between; padding:0 14px 10px; }
 .brand { display:flex; flex-direction:column; gap:7px; }
-.logo { font:800 clamp(2rem,5vw,4.4rem)/.8 'Baloo 2',sans-serif; letter-spacing:.025em; color:#fff; text-shadow:0 4px 0 var(--purple),0 8px 18px rgba(53,55,130,.2); }
+.home-link { color:inherit; text-decoration:none; }
+.logo { margin:0; font:800 clamp(2rem,5vw,4.4rem)/.8 'Baloo 2',sans-serif; letter-spacing:.025em; color:#fff; text-shadow:0 4px 0 var(--purple),0 8px 18px rgba(53,55,130,.2); }
 .logo span { color:#ffd84d; }
 .creator-credit { color:#5a2a91; font:900 clamp(.85rem,1.8vw,1.05rem) 'Nunito',sans-serif; letter-spacing:.04em; }
 header p { margin:0; font-weight:900; font-size:clamp(.9rem,2vw,1.15rem); color:#5a2a91; }
+.site-nav { width:min(1050px,100%); display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin:0 0 23px; }
+.site-nav a { border:2px solid rgba(112,54,189,.3); border-radius:999px; padding:7px 13px; background:rgba(255,255,255,.72); color:#56238d; font-size:.9rem; font-weight:900; text-decoration:none; }
+.site-nav a:hover,.site-nav a:focus-visible { background:#fff; border-color:var(--purple); }
 .game { width:min(1050px,100%); display:grid; grid-template-columns:minmax(390px,1fr) minmax(250px,.58fr); gap:clamp(18px,4vw,55px); align-items:center; }
 .wheel-wrap { position:relative; width:min(72vw,720px); justify-self:center; aspect-ratio:1; filter:drop-shadow(0 15px 12px rgba(52,83,140,.26)); }
 canvas { width:100%; height:100%; display:block; }
@@ -21,5 +25,39 @@ canvas { width:100%; height:100%; display:block; }
 #spin:hover { filter:brightness(1.08); } #spin:active { transform:translate(-50%,-45%); box-shadow:0 3px 0 #4b2088,0 7px 12px rgba(56,30,105,.25); }
 .result-card { background:rgba(255,255,255,.92); border:5px solid var(--purple); border-radius:30px; padding:28px 28px 23px; box-shadow:0 11px 0 rgba(94,45,153,.23); text-align:center; }
 .result-label { color:#8a46d6; font:900 1rem 'Baloo 2',sans-serif; letter-spacing:.11em; } .result-card p { font:800 clamp(1.3rem,2.8vw,2.15rem)/1.12 'Baloo 2',sans-serif; margin:13px 0 25px; color:var(--ink); } .count { border-top:2px dashed #c49ce9; padding-top:16px; font-size:.98rem; font-weight:800; color:#765397; } .count strong { color:#f4537f; font-size:1.35rem; }
-footer { color:#5a2a91; font-weight:800; text-align:center; margin-top:auto; padding-top:16px; }
-@media (max-width:720px) { .game { grid-template-columns:1fr; gap:10px; } .wheel-wrap { width:min(92vw,590px); } .pointer { border-left-width:18px; border-right-width:18px; border-top-width:46px; } .result-card { width:min(530px,100%); padding:18px; } header { flex-direction:column; gap:11px; } }
+.seo-content { width:min(1050px,100%); display:grid; gap:20px; margin:54px 0 20px; }
+.content-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px; }
+.content-card { border:3px solid rgba(112,54,189,.45); border-radius:24px; padding:clamp(22px,4vw,34px); background:rgba(255,255,255,.92); box-shadow:0 9px 0 rgba(94,45,153,.16); }
+.content-card h2 { margin:0 0 14px; color:#55218d; font:800 clamp(1.55rem,3.5vw,2.35rem)/1.05 'Baloo 2',sans-serif; }
+.content-card p,.content-card li { font-size:1.02rem; line-height:1.65; }
+.content-card p:last-child { margin-bottom:0; }
+.content-card a { color:#6529a8; font-weight:900; }
+.eyebrow { margin:0 0 8px; color:#f4537f; font-size:.82rem!important; font-weight:900; letter-spacing:.1em; text-transform:uppercase; }
+.content-card ol { margin:0; padding-left:1.4rem; }
+.dare-list { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px 28px; margin:0; padding-left:1.4rem; }
+.faq details { border-top:2px dashed #cfafea; padding:14px 0; }
+.faq details:last-child { padding-bottom:0; }
+.faq summary { cursor:pointer; color:#4d1e82; font-weight:900; }
+.faq details p { margin:9px 0 0; }
+footer { width:min(1050px,100%); color:#5a2a91; font-weight:800; text-align:center; margin-top:auto; padding-top:18px; }
+footer p { margin:8px 0; }
+.footer-links { display:flex; flex-wrap:wrap; justify-content:center; gap:8px 18px; }
+.footer-links a { color:#55218d; }
+
+/* SEO guide pages */
+.guide-shell { width:min(920px,calc(100% - 32px)); margin:0 auto; padding:28px 0 48px; }
+.guide-header { display:block; width:100%; padding:0 0 18px; }
+.guide-header .logo { font-size:clamp(1.8rem,5vw,3.4rem); }
+.guide-header .creator-credit { margin-top:8px; }
+.guide-shell .site-nav { width:100%; justify-content:flex-start; margin-bottom:24px; }
+.guide-hero { border:4px solid var(--purple); border-radius:30px; padding:clamp(26px,6vw,54px); background:rgba(255,255,255,.94); box-shadow:0 12px 0 rgba(94,45,153,.2); }
+.guide-hero .eyebrow { margin-bottom:10px; }
+.guide-hero h1 { margin:0; color:#55218d; font:800 clamp(2.4rem,7vw,4.8rem)/.92 'Baloo 2',sans-serif; }
+.guide-hero .lede { max-width:720px; margin:18px 0 0; font-size:clamp(1.08rem,2.5vw,1.3rem); line-height:1.55; }
+.play-link { display:inline-block; margin-top:22px; border-radius:999px; padding:13px 22px; background:var(--purple); color:#fff!important; font:900 1rem 'Nunito',sans-serif; text-decoration:none; box-shadow:0 5px 0 #4b2088; }
+.guide-content { display:grid; gap:20px; margin-top:20px; }
+.guide-content .content-card { box-shadow:0 7px 0 rgba(94,45,153,.14); }
+.guide-content h2 { scroll-margin-top:20px; }
+.guide-content h3 { margin:20px 0 8px; color:#6830aa; font:800 1.25rem 'Baloo 2',sans-serif; }
+.guide-footer { width:100%; margin-top:28px; }
+@media (max-width:720px) { .game { grid-template-columns:1fr; gap:10px; } .wheel-wrap { width:min(92vw,590px); } .pointer { border-left-width:18px; border-right-width:18px; border-top-width:46px; } .result-card { width:min(530px,100%); padding:18px; } header { flex-direction:column; gap:11px; } .content-grid,.dare-list { grid-template-columns:1fr; } .site-nav { justify-content:center; overflow-x:visible; flex-wrap:wrap; padding-bottom:5px; } .site-nav a { flex:0 0 auto; } }
