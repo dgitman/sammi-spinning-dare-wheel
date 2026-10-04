@@ -16,7 +16,7 @@ function game() {
     '#result-card': { classList: { add() {}, remove() {}, toggle() {} } },
     '#pack': { value: 'all', addEventListener() {} },
     '#difficulty': { value: 'all', addEventListener() {} },
-    '#sound': { checked: false },
+    '#sound': { checked: true },
     '#motion': { checked: false },
     '#loading': { classList: { add() {} } },
   };
