@@ -63,7 +63,9 @@ test('optimized background is smaller and performance hints are present', () => 
   for (const [path] of pages) {
     const html = read(path);
     assert.match(html, /sky-background\.webp/);
-    assert.match(html, /display=swap/);
+    assert.doesNotMatch(html, /fonts\.googleapis\.com/);
+    assert.match(html, /rel="preload" href="\/assets\/fonts\/baloo-2-latin\.woff2"/);
+    assert.doesNotMatch(html, /id="loading"/);
   }
 });
 

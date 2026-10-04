@@ -115,5 +115,5 @@ spin.addEventListener('click', () => {
   requestAnimationFrame(frame);
 });
 configure();
-const finishLoading = () => requestAnimationFrame(() => $('#loading')?.classList.add('done'));
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', finishLoading); else finishLoading();
+// Refresh canvas labels when the locally served fonts become available.
+document.fonts?.ready.then(() => { if (!spinning) draw(); });

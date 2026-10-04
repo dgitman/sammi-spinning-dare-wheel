@@ -27,7 +27,6 @@ function game() {
     requestAnimationFrame: (callback) => frames.push(callback),
   });
   runInContext(source, context);
-  frames.shift()(0);
   return { context, elements, frames };
 }
 
