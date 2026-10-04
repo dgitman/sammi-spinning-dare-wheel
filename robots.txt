@@ -1,3 +1,4 @@
+# Public game and guides; keep styles, scripts, and images crawlable.
 User-agent: *
 Allow: /
 

@@ -66,3 +66,33 @@ test('optimized background is smaller and performance hints are present', () => 
     assert.match(html, /display=swap/);
   }
 });
+
+test('structured page identities, breadcrumbs, and sharing URLs match canonical pages', () => {
+  for (const [path, canonical] of pages) {
+    const html = read(path);
+    const data = JSON.parse(html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/)[1]);
+    const page = data['@graph'].find(node => node['@type'] === 'WebPage');
+    assert.equal(page.url, canonical);
+    assert.equal(page['@id'], `${canonical}#webpage`);
+    assert.equal(page.isPartOf['@id'], 'https://spinningdarewheel.com/#website');
+    assert.match(html, /name="robots" content="index, follow, max-image-preview:large"/);
+    assert.ok(html.includes(`property="og:url" content="${canonical}"`));
+    assert.match(html, /name="twitter:image:alt"/);
+    assert.match(html, /rel="sitemap" type="application\/xml" href="\/sitemap.xml"/);
+    const sitemapEntry = read('sitemap.xml').match(new RegExp(`<loc>${canonical.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}</loc>\\s*<lastmod>([^<]+)</lastmod>`));
+    assert.equal(page.dateModified, sitemapEntry?.[1]);
+    if (path === 'index.html') {
+      const app = data['@graph'].find(node => node['@type'] === 'WebApplication');
+      assert.equal(app.mainEntityOfPage['@id'], page['@id']);
+      assert.equal(app.offers.price, '0');
+      assert.ok(app.featureList.includes('No repeated dares within a round'));
+    } else {
+      const breadcrumb = data['@graph'].find(node => node['@type'] === 'BreadcrumbList');
+      assert.equal(page.breadcrumb['@id'], breadcrumb['@id']);
+      assert.deepEqual(breadcrumb.itemListElement.map(item => item.position), [1, 2]);
+      assert.equal(breadcrumb.itemListElement[0].item, pages[0][1]);
+      assert.equal(breadcrumb.itemListElement[1].item, canonical);
+      assert.ok(html.includes(`aria-current="page">${breadcrumb.itemListElement[1].name}</span>`));
+    }
+  }
+});

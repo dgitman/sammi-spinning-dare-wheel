@@ -12,14 +12,108 @@ const dares = [
   'Go outside and dance like a cowboy', 'Do a model runway walk on the sidewalk', 'Do a dramatic cowboy reaction to a splash of pretend water', 'Wave and say hello to people you already know', 'Explain Monopoly to an imaginary crush', 'Ask the group for permission before your next snack break', 'Whenever someone says “like,” say “there you go again” for one round', 'For one round, add a random harmless exclamation to every sentence', 'Sing everything you say for the next two minutes', 'Rank the group’s best animal impressions from first to fifth',
   'Taste a condiment only if you want to and it is safe for you', 'Invent the wildest sandwich the group can imagine', 'Pretend to be the person on your right for one minute', 'Try to whistle a tune after a sip of water', 'Pretend you are underwater for the next round', 'Talk without fully closing your mouth for 30 seconds', 'Take a silly selfie just for the group, without posting it', 'Talk to a pillow as if it is your celebrity crush', 'Sing a group-chosen song without any food challenge', 'Draw a tiny black tooth on paper and wear it as a pretend badge',
   'Pretend to call your future self and give encouraging advice', 'Have a full conversation with yourself in a mirror', 'Go outside and try to summon the rain with a dance', 'Give yourself a silly face-paint design using a washable, skin-safe marker', 'Tell the group a harmless made-up secret',
-  'Give yourself a 30 minute facial of peanut butter', 'Give yourself a 30 minute facial of peanut butter', 'Give yourself a 30 minute facial of peanut butter'
+  'Invent a superhero whose power is making snacks', 'Give a dramatic speech to your favorite pillow', 'Design an imaginary planet and introduce its inhabitants'
 ];
-const colors = Array.from({length:dares.length},(_,i)=>`hsl(${(i*137.508)%360} 84% ${56+(i%3)*6}%)`);
-const canvas=document.querySelector('#wheel'),ctx=canvas.getContext('2d'),spin=document.querySelector('#spin'),result=document.querySelector('#result');
-let rotation=0, spinning=false; const total=dares.length, slice=Math.PI*2/total;
-document.querySelector('#count').textContent=total;
-function draw(){const n=canvas.width/2;ctx.clearRect(0,0,canvas.width,canvas.height);ctx.save();ctx.translate(n,n);ctx.rotate(rotation);for(let i=0;i<total;i++){const a=i*slice-Math.PI/2;ctx.beginPath();ctx.moveTo(0,0);ctx.arc(0,0,n-25,a,a+slice);ctx.closePath();ctx.fillStyle=colors[i];ctx.fill();ctx.strokeStyle='rgba(255,255,255,.78)';ctx.lineWidth=2;ctx.stroke();if(i%5===0){ctx.save();ctx.rotate(a+slice/2);ctx.fillStyle='rgba(51,18,92,.8)';ctx.font='900 13px Nunito';ctx.textAlign='right';ctx.fillText(i+1,n-43,5);ctx.restore();}}ctx.beginPath();ctx.arc(0,0,n-20,0,Math.PI*2);ctx.strokeStyle='#6630ad';ctx.lineWidth=28;ctx.stroke();ctx.restore();}
-function ease(t){return 1-Math.pow(1-t,4)}
-spin.addEventListener('click',()=>{if(spinning)return;spinning=true;spin.disabled=true;const start=rotation,turns=7+Math.random()*4,target=start+turns*Math.PI*2+Math.random()*Math.PI*2,duration=4300,startAt=performance.now();result.textContent='The wheel is choosing…';function frame(now){const t=Math.min(1,(now-startAt)/duration);rotation=start+(target-start)*ease(t);draw();if(t<1)requestAnimationFrame(frame);else{rotation%=Math.PI*2;const pointerAngle=(-Math.PI/2-rotation+Math.PI*2)%(Math.PI*2);const index=Math.floor(pointerAngle/slice)%total;result.textContent=dares[index];spinning=false;spin.disabled=false;}}requestAnimationFrame(frame);});draw();
-const finishLoading=()=>requestAnimationFrame(()=>document.querySelector('#loading')?.classList.add('done'));
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',finishLoading);else finishLoading();
+// Packs use each dare's activity; challenge level reflects how much performing it asks for.
+const challenges = dares.map((text, id) => ({
+  id, text,
+  pack: /group|everyone|person|player|handshake|compliment|selfie|secret|pillow|mirror/.test(text) ? 'friends'
+    : /dance|runway|walk|rap|sing|song|beatbox|cheer|clap|jumping/.test(text) ? 'party'
+    : /invent|create|draw|make up|design|pitch|code/.test(text.toLowerCase()) ? 'creative' : 'funny',
+  difficulty: /dance|runway|rap|sing|opera|stand-up|two minutes|one minute|outside|pitch|tongue twister/.test(text.toLowerCase()) ? 'bold' : 'easy',
+}));
+const $ = selector => document.querySelector(selector);
+const canvas = $('#wheel'), ctx = canvas.getContext('2d'), spin = $('#spin'), result = $('#result');
+const pack = $('#pack'), difficulty = $('#difficulty'), sound = $('#sound'), motion = $('#motion');
+const systemMotion = typeof matchMedia === 'function' ? matchMedia('(prefers-reduced-motion: reduce)') : null;
+motion.checked = systemMotion?.matches ?? false;
+systemMotion?.addEventListener('change', event => { motion.checked = event.matches; });
+const fullTurn = Math.PI * 2;
+let rotation = 0, spinning = false, active = [], remaining = [];
+// History survives switching packs, so changing filters cannot reintroduce a used dare.
+const used = new Set();
+let audioContext;
+function tone(frequency, duration = .035) {
+  if (!sound.checked) return;
+  try {
+    const Audio = globalThis.AudioContext || globalThis.webkitAudioContext;
+    if (!Audio) return;
+    audioContext ||= new Audio();
+    void audioContext.resume().catch(() => {});
+    const oscillator = audioContext.createOscillator(), gain = audioContext.createGain();
+    oscillator.connect(gain); gain.connect(audioContext.destination);
+    oscillator.frequency.value = frequency;
+    gain.gain.setValueAtTime(.045, audioContext.currentTime);
+    gain.gain.exponentialRampToValueAtTime(.001, audioContext.currentTime + duration);
+    oscillator.start(); oscillator.stop(audioContext.currentTime + duration);
+  } catch { /* Sound is optional; a browser audio restriction must never block a spin. */ }
+}
+function updateCount() { $('#count').textContent = remaining.length; }
+function configure() {
+  if (spinning) return;
+  active = challenges.filter(dare => (pack.value === 'all' || dare.pack === pack.value)
+    && (difficulty.value === 'all' || dare.difficulty === difficulty.value));
+  remaining = active.filter(dare => !used.has(dare.id));
+  canvas.setAttribute('aria-label', `A wheel containing ${active.length} colorful dares`);
+  spin.disabled = active.length === 0;
+  result.textContent = active.length ? 'Tap SPIN for your next dare!' : 'Try another pack or difficulty.';
+  $('#remaining-label').textContent = remaining.length ? 'dares left in this round' : 'dares left — spin to start a new round';
+  $('#result-card').classList.remove('revealed');
+  updateCount(); draw();
+}
+function draw() {
+  const n = canvas.width / 2, slice = fullTurn / active.length;
+  ctx.clearRect(0, 0, canvas.width, canvas.height); ctx.save(); ctx.translate(n, n); ctx.rotate(rotation);
+  active.forEach((dare, i) => {
+    const angle = i * slice - Math.PI / 2;
+    ctx.beginPath(); ctx.moveTo(0, 0); ctx.arc(0, 0, n - 25, angle, angle + slice); ctx.closePath();
+    ctx.fillStyle = `hsl(${(i * 137.508) % 360} 84% ${56 + (i % 3) * 6}%)`; ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,.78)'; ctx.lineWidth = 2; ctx.stroke();
+    if (active.length <= 35 || i % 5 === 0) {
+      ctx.save(); ctx.rotate(angle + slice / 2); ctx.fillStyle = '#32165f';
+      ctx.font = '900 13px Nunito'; ctx.textAlign = 'right'; ctx.fillText(i + 1, n - 43, 5); ctx.restore();
+    }
+  });
+  ctx.beginPath(); ctx.arc(0, 0, n - 20, 0, fullTurn); ctx.strokeStyle = '#6630ad'; ctx.lineWidth = 28; ctx.stroke(); ctx.restore();
+}
+pack.addEventListener('change', configure); difficulty.addEventListener('change', configure);
+spin.addEventListener('click', () => {
+  if (spinning || !active.length) return;
+  if (!remaining.length) {
+    active.forEach(dare => used.delete(dare.id));
+    remaining = [...active];
+  }
+  const chosen = remaining[Math.floor(Math.random() * remaining.length)];
+  const index = active.indexOf(chosen), slice = fullTurn / active.length;
+  const landing = (fullTurn - (index + .5) * slice) % fullTurn;
+  const start = rotation;
+  const target = start + (6 + Math.floor(Math.random() * 3)) * fullTurn + (landing - start + fullTurn) % fullTurn;
+  const duration = motion.checked ? 180 : 4300, startAt = performance.now();
+  spinning = true; spin.disabled = true; pack.disabled = true; difficulty.disabled = true;
+  $('#result-card').classList.remove('revealed');
+  result.textContent = 'The wheel is choosing…'; tone(450);
+  let previousTick = Math.floor(start / slice), lastSound = -Infinity;
+  function frame(now) {
+    const t = Math.max(0, Math.min(1, (now - startAt) / duration));
+    rotation = motion.checked ? start : start + (target - start) * (1 - Math.pow(1 - t, 4));
+    draw();
+    const tick = Math.floor(rotation / slice);
+    if (!motion.checked && tick !== previousTick && now - lastSound >= 55) { tone(650); lastSound = now; }
+    previousTick = tick;
+    if (t < 1) requestAnimationFrame(frame);
+    else {
+      rotation = landing; draw();
+      used.add(chosen.id); remaining = remaining.filter(dare => dare.id !== chosen.id);
+      result.textContent = chosen.text;
+      $('#result-card').classList.toggle('less-motion', motion.checked);
+      $('#result-card').classList.add('revealed');
+      $('#remaining-label').textContent = remaining.length ? 'dares left in this round' : 'round complete — spin for a fresh round';
+      updateCount(); tone(880, .18);
+      spinning = false; spin.disabled = false; pack.disabled = false; difficulty.disabled = false;
+    }
+  }
+  requestAnimationFrame(frame);
+});
+configure();
+const finishLoading = () => requestAnimationFrame(() => $('#loading')?.classList.add('done'));
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', finishLoading); else finishLoading();
